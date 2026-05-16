@@ -1,84 +1,62 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import { VitePWA } from 'vite-plugin-pwa'
-import path from 'path'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+import { componentTagger } from "lovable-tagger";
+import { VitePWA } from "vite-plugin-pwa";
 
-export default defineConfig({
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
+// https://vitejs.dev/config/
+export default defineConfig(({ mode }) => ({
   server: {
-    proxy: {
-      '/api/currency': {
-        target: 'https://api.frankfurter.app',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/currency/, ''),
-      },
+    host: "::",
+    port: 8080,
+    hmr: {
+      overlay: false,
     },
   },
   plugins: [
     react(),
-    tailwindcss(),
+    mode === "development" && componentTagger(),
     VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon-*.png'],
+      registerType: "autoUpdate",
+      devOptions: {
+        enabled: false,
+      },
+      includeAssets: ["favicon.ico", "pwa-512.png"],
       manifest: {
-        name: 'CalcPro — Modern Calculator',
-        short_name: 'CalcPro',
-        description: 'A premium PWA calculator with currency converter',
-        theme_color: '#0a0a0f',
-        background_color: '#0a0a0f',
-        display: 'standalone',
-        orientation: 'portrait',
-        scope: '/',
-        start_url: '/',
+        name: "vrnan Calculator",
+        short_name: "vrnan",
+        description: "Kalkulator modern dengan tema gelap elegan, mode scientific, dan riwayat perhitungan.",
+        theme_color: "#0b0a14",
+        background_color: "#0b0a14",
+        display: "standalone",
+        orientation: "portrait",
+        start_url: "/",
+        scope: "/",
         icons: [
           {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
+            src: "/pwa-512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any",
           },
           {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable',
+            src: "/pwa-512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "maskable",
           },
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/api\.frankfurter\.app\/.*/i,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'currency-api-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60, // 1 hour
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
-              },
-            },
-          },
-        ],
+        navigateFallbackDenylist: [/^\/~oauth/],
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
       },
     }),
-  ],
-})
+  ].filter(Boolean),
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+    dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime", "@tanstack/react-query", "@tanstack/query-core"],
+  },
+}));
