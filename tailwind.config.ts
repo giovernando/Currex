@@ -72,6 +72,8 @@ export default {
       fontFamily: {
         display: ["'Space Grotesk'", "system-ui", "sans-serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
+        retro: ["VT323", "monospace"],
+        mono: ["'JetBrains Mono'", "monospace"],
       },
       keyframes: {
         "accordion-down": {
