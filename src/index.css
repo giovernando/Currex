@@ -6,61 +6,57 @@
 
 @layer base {
   :root {
-    --background: 240 25% 6%;
-    --foreground: 250 20% 96%;
+    /* Retro LCD / Industrial Palette */
+    --background: 40 10% 12%;    /* Deep warm charcoal */
+    --foreground: 60 20% 90%;    /* Off-white beige */
 
-    --card: 240 24% 9%;
-    --card-foreground: 250 20% 96%;
+    --card: 40 10% 18%;          /* Slightly lighter charcoal for "plastic" casing */
+    --card-foreground: 60 20% 90%;
 
-    --popover: 240 24% 9%;
-    --popover-foreground: 250 20% 96%;
+    --popover: 40 10% 15%;
+    --popover-foreground: 60 20% 90%;
 
-    --primary: 265 89% 66%;
-    --primary-foreground: 250 20% 98%;
-    --primary-glow: 280 95% 72%;
+    --primary: 25 90% 55%;       /* Retro Industrial Orange */
+    --primary-foreground: 40 10% 10%;
+    --primary-glow: 25 100% 70%;
 
-    --secondary: 240 18% 14%;
-    --secondary-foreground: 250 20% 96%;
+    --secondary: 40 8% 22%;      /* Darker plastic */
+    --secondary-foreground: 60 15% 80%;
 
-    --muted: 240 16% 16%;
-    --muted-foreground: 245 10% 65%;
+    --muted: 40 10% 16%;
+    --muted-foreground: 60 10% 60%;
 
-    --accent: 195 95% 60%;
-    --accent-foreground: 240 25% 8%;
+    --accent: 180 60% 45%;       /* Teal/Cyan accent (classic computer UI) */
+    --accent-foreground: 40 10% 10%;
 
-    --destructive: 0 78% 62%;
-    --destructive-foreground: 250 20% 98%;
+    --destructive: 0 80% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --operator: 32 100% 60%;
-    --operator-foreground: 240 25% 8%;
+    --operator: 200 40% 30%;     /* Steel blue for operators */
+    --operator-foreground: 200 100% 90%;
 
-    --border: 240 18% 18%;
-    --input: 240 18% 18%;
-    --ring: 265 89% 66%;
+    --border: 40 10% 25%;
+    --input: 40 10% 25%;
+    --ring: 25 90% 55%;
 
-    --radius: 1.25rem;
+    --radius: 0.25rem;           /* Blocky corners */
 
-    /* Gradients */
-    --gradient-bg: radial-gradient(ellipse at top, hsl(265 60% 14%) 0%, hsl(240 25% 6%) 55%);
-    --gradient-display: linear-gradient(180deg, hsl(240 24% 11%), hsl(240 28% 7%));
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-operator: linear-gradient(135deg, hsl(32 100% 60%), hsl(18 95% 58%));
+    /* Retro LCD Colors */
+    --lcd-bg: 75 40% 60%;        /* Classic Gameboy Olive Green */
+    --lcd-text: 75 50% 15%;      /* Dark greenish black */
 
-    /* Shadows */
-    --shadow-elegant: 0 20px 60px -20px hsl(265 89% 30% / 0.55);
-    --shadow-key: 0 6px 18px -6px hsl(0 0% 0% / 0.6);
-    --shadow-glow: 0 0 40px hsl(265 89% 66% / 0.35);
+    /* Gradients (more subtle, plastic look) */
+    --gradient-bg: linear-gradient(180deg, hsl(40 10% 15%) 0%, hsl(40 10% 8%) 100%);
+    --gradient-display: linear-gradient(180deg, hsl(var(--lcd-bg) / 0.9) 0%, hsl(var(--lcd-bg)) 100%);
+    --gradient-primary: linear-gradient(180deg, hsl(var(--primary)), hsl(25 90% 45%));
+    --gradient-operator: linear-gradient(180deg, hsl(var(--operator)), hsl(200 40% 20%));
 
-    --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+    /* Shadows (Beveled physical feel) */
+    --shadow-elegant: 0 10px 30px -10px rgba(0,0,0,0.5);
+    --shadow-key: inset 0 2px 0 rgba(255,255,255,0.1), 0 4px 0 rgba(0,0,0,0.4);
+    --shadow-glow: 0 0 20px hsl(var(--primary) / 0.2);
 
-    --sidebar-background: 240 24% 9%;
-    --sidebar-foreground: 250 20% 96%;
-    --sidebar-primary: 265 89% 66%;
-    --sidebar-primary-foreground: 250 20% 98%;
-    --sidebar-accent: 240 18% 14%;
-    --sidebar-accent-foreground: 250 20% 96%;
-    --sidebar-border: 240 18% 18%;
-    --sidebar-ring: 265 89% 66%;
+    --transition-smooth: 0.1s ease-in-out; /* Snappier transitions */
   }
 }
 
@@ -80,7 +76,7 @@
     background: var(--gradient-bg);
     background-attachment: fixed;
     font-feature-settings: "ss01", "cv11";
-    -webkit-font-smoothing: antialiased;
+    image-rendering: pixelated;
   }
 }
 
@@ -106,5 +102,27 @@
   .text-display {
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
+  }
+  .scanlines {
+    position: relative;
+    overflow: hidden;
+  }
+  .scanlines::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+      linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 200, 0.02));
+    z-index: 2;
+    background-size: 100% 4px, 3px 100%;
+    pointer-events: none;
+  }
+  .lcd-text {
+    color: hsl(var(--lcd-text));
+    text-shadow: 1px 1px 0px hsla(var(--lcd-bg), 0.5);
   }
 }

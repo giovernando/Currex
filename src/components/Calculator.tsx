@@ -41,13 +41,13 @@ interface KeyProps {
 }
 
 const keyClasses: Record<NonNullable<KeyProps["variant"]>, string> = {
-  default: "bg-card text-foreground hover:bg-card/80 border border-border/40",
-  muted: "bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80",
-  operator: "bg-gradient-operator text-operator-foreground shadow-key font-semibold",
-  equals: "bg-gradient-primary text-primary-foreground shadow-glow font-semibold",
-  accent: "bg-secondary text-accent hover:bg-secondary/80 font-semibold",
+  default: "bg-card text-foreground hover:bg-card/80 border-2 border-border shadow-key active:shadow-none",
+  muted: "bg-secondary text-muted-foreground hover:text-foreground shadow-key active:shadow-none",
+  operator: "bg-gradient-operator text-operator-foreground shadow-key active:shadow-none border-b-4 border-black/20",
+  equals: "bg-gradient-primary text-primary-foreground shadow-key active:shadow-none border-b-4 border-black/20 font-bold",
+  accent: "bg-accent text-accent-foreground hover:bg-accent/80 font-bold shadow-key active:shadow-none",
   scientific:
-    "bg-secondary/70 text-accent hover:bg-secondary border border-border/30 font-medium",
+    "bg-secondary/70 text-accent hover:bg-secondary border-2 border-border/50 font-medium shadow-key active:shadow-none",
 };
 
 const CalcKey = ({
@@ -66,8 +66,8 @@ const CalcKey = ({
     whileHover={{ y: -2 }}
     transition={{ type: "spring", stiffness: 500, damping: 24 }}
     className={cn(
-      "rounded-2xl font-display select-none flex items-center justify-center transition-colors active:shadow-inner",
-      size === "default" ? "h-16 sm:h-[68px] text-xl sm:text-2xl" : "h-12 text-sm sm:text-base",
+      "rounded-lg font-retro select-none flex items-center justify-center transition-all active:translate-y-0.5 active:shadow-none",
+      size === "default" ? "h-16 sm:h-[68px] text-2xl sm:text-3xl" : "h-12 text-lg sm:text-xl",
       span === 2 && "col-span-2",
       keyClasses[variant],
     )}
@@ -80,18 +80,18 @@ const Display = ({ expression, display }: { expression: string; display: string 
   const formatted = formatDisplay(display);
   const formattedExpr = formatExpression(expression);
   return (
-    <div className="bg-gradient-display rounded-3xl p-6 sm:p-7 mb-5 border border-border/40 shadow-elegant">
-      <div className="h-6 text-right text-sm text-muted-foreground/80 truncate font-mono">
+    <div className="bg-gradient-display scanlines rounded-lg p-6 sm:p-7 mb-5 border-4 border-card shadow-inner min-h-[120px] flex flex-col justify-end">
+      <div className="h-6 text-right text-sm lcd-text opacity-70 truncate font-mono mb-1">
         {formattedExpr || "\u00A0"}
       </div>
       <AnimatePresence mode="popLayout">
         <motion.div
           key={formatted}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.15 }}
-          className="text-display text-right text-5xl sm:text-6xl font-display font-semibold mt-2 break-all"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.1 }}
+          className="text-right text-5xl sm:text-6xl font-retro lcd-text break-all"
         >
           {formatted}
         </motion.div>
@@ -120,7 +120,7 @@ const HistoryPanel = ({
         transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
         className="overflow-hidden"
       >
-        <div className="bg-card/60 backdrop-blur rounded-2xl border border-border/40 mb-5 p-4">
+        <div className="bg-card rounded-lg border-2 border-border mb-5 p-4 shadow-elegant">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
               History
@@ -146,10 +146,10 @@ const HistoryPanel = ({
                     onClick={() => onSelect(h)}
                     className="w-full text-right p-2.5 rounded-xl hover:bg-muted/50 transition-colors group"
                   >
-                    <div className="text-xs text-muted-foreground font-mono truncate">
+                    <div className="text-[10px] text-muted-foreground font-mono truncate uppercase">
                       {formatExpression(h.expression)}
                     </div>
-                    <div className="text-lg font-display font-semibold group-hover:text-accent transition-colors">
+                    <div className="text-xl font-retro group-hover:text-primary transition-colors">
                       = {formatDisplay(h.result)}
                     </div>
                   </button>
@@ -234,8 +234,8 @@ export const Calculator = () => {
       {/* Header */}
       <header className="flex items-center justify-between mb-5 px-1">
         <div>
-          <h1 className="font-display text-2xl font-semibold tracking-tight">vrnan</h1>
-          <p className="text-xs text-muted-foreground">Elegant Calculator</p>
+          <h1 className="font-retro text-3xl font-bold tracking-widest text-primary uppercase">vrnan</h1>
+          <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-[0.2em]">Model 3000-X // v.1.0</p>
         </div>
         <div className="flex items-center gap-2">
           <InstallButton />
@@ -245,8 +245,8 @@ export const Calculator = () => {
             onClick={buzz(() => setShowHistory((s) => !s))}
             aria-label="Toggle history"
             className={cn(
-              "h-9 w-9 rounded-full bg-secondary/60 hover:bg-secondary",
-              showHistory && "bg-primary/20 text-primary-glow",
+              "h-9 w-9 rounded-sm bg-card border border-border hover:bg-secondary",
+              showHistory && "bg-primary text-primary-foreground shadow-key",
             )}
           >
             <HistoryIcon className="h-4 w-4" />
@@ -267,7 +267,7 @@ export const Calculator = () => {
       />
 
       {/* Mode toggle */}
-      <div className="flex items-center bg-card/60 border border-border/40 rounded-full p-1 mb-4">
+      <div className="flex items-center bg-card border-2 border-border rounded-lg p-1 mb-6">
         {(["basic", "scientific"] as Mode[]).map((m) => {
           const active = mode === m;
           return (
@@ -275,14 +275,14 @@ export const Calculator = () => {
               key={m}
               onClick={buzz(() => setMode(m))}
               className={cn(
-                "flex-1 flex items-center justify-center gap-1.5 text-xs font-medium py-2 rounded-full transition-all",
+                "flex-1 flex items-center justify-center gap-2 text-[10px] font-bold py-2 rounded-md transition-all uppercase tracking-wider",
                 active
-                  ? "bg-gradient-primary text-primary-foreground shadow-glow"
+                  ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              {m === "basic" ? <CalcIcon className="h-3.5 w-3.5" /> : <FlaskConical className="h-3.5 w-3.5" />}
-              {m === "basic" ? "Basic" : "Scientific"}
+              {m === "basic" ? <CalcIcon className="h-3 w-3" /> : <FlaskConical className="h-3 w-3" />}
+              {m === "basic" ? "Standard" : "Scientific"}
             </button>
           );
         })}
