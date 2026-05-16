@@ -2,11 +2,11 @@
 
 A state-of-the-art, high-performance Progressive Web App (PWA) that blends **Retro Industrial Aesthetics** with modern engineering. Designed for precision, speed, and a premium tactile experience.
 
-## 🌟 Overview
+## Overview
 
 **vrnan Calculator** is more than just a math tool—it's a digital hardware recreation. Every interaction is designed to feel physical, from the beveled button shadows to the CRT-style scanlines on the LCD display. It features a robust scientific engine and a live currency converter powered by real-time market data.
 
-## 🛠️ Key Features
+## Key Features
 
 ### 1. Dual-Mode Calculator
 - **Standard Mode**: Efficient, large-button interface for daily math.
@@ -30,7 +30,7 @@ A state-of-the-art, high-performance Progressive Web App (PWA) that blends **Ret
 - **Mechanical UI**: Simulated beveled borders (`shadow-key`) and active-state translations (`active:translate-y-0.5`).
 - **LCD Scanlines**: CSS-powered CRT overlays on the greenish-olive display area.
 
-## 🏗️ Technical Architecture
+## Technical Architecture
 
 ### Core Components
 - `Calculator.tsx`: The primary UI container for math logic.
@@ -47,7 +47,7 @@ A state-of-the-art, high-performance Progressive Web App (PWA) that blends **Ret
 - **Tailwind CSS**: Custom configuration in `tailwind.config.ts` for retro fonts (`VT323`, `Space Grotesk`).
 - **Framer Motion**: Handles all transitions, height animations, and mode-switching effects.
 
-## 🚦 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js (v18+)
@@ -67,7 +67,7 @@ A state-of-the-art, high-performance Progressive Web App (PWA) that blends **Ret
    npm run dev
    ```
 
-## 📜 Project Structure
+## Project Structure
 ```text
 src/
 ├── components/      # UI Components (Calculator, Converter, Nav)
