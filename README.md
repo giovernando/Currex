@@ -1,4 +1,4 @@
-# vrnan Calculator (Currex)
+# Calculator (Currex)
 
 A state-of-the-art, high-performance Progressive Web App (PWA) that blends **Retro Industrial Aesthetics** with modern engineering. Designed for precision, speed, and a premium tactile experience.
 
